@@ -50,6 +50,8 @@ func DoConn(conn *Conn) {
 	defer util.RecoverPanic()
 
 	for {
+		//	如果大量的连接都是恶意连接,占用过多的内存. 这算是一种攻击. 加上一个定时器吧. 12 minute 太长了.
+		//	当然安全设施不是那么简单, 这得是一整套的规则. 目前可以先做到这里.
 		err := conn.WS.SetReadDeadline(time.Now().Add(12 * time.Minute))
 		if err != nil {
 			HandleReadErr(conn, err)
